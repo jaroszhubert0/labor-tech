@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# IMPORTANT: podmień domenę w sitemapie na prawdziwą.
 Sitemap: https://labor-tech.pl/sitemap.xml
