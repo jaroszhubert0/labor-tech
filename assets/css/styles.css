@@ -120,16 +120,21 @@ img {
 }
 
 .brand-badge {
-  height: 90px;
+  height: 64px;
   padding: 6px 12px;
   border-radius: 16px;
   background: var(--white);
-  border: 1px solid var(--line-soft);
   box-shadow: 0 12px 24px rgba(0, 35, 55, 0.04);
   overflow: hidden;
   display: flex;
   align-items: center;
 }
+
+.brand-badge img {
+    width: 190px !important;
+    height: auto !important;
+    display: block;
+  }
 
 .nav {
   display: flex;
@@ -317,7 +322,7 @@ img {
 }
 
 .hero--premium {
-  padding-top: 56px;
+  padding-top: 32px;
   padding-bottom: 56px;
 }
 
@@ -1137,14 +1142,62 @@ h1 {
     display: none;
   }
 }
-
 @media (max-width: 640px) {
   .container {
     padding: 0 18px;
   }
 
+  .header-inner {
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 6px 0 !important;
+  }
+
+  .header-actions {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    gap: 0;
+  }
+
+  .pill,
+  .header-cta {
+    display: none !important;
+  }
+
+  .menu-btn {
+    padding: 6px 8px;
+  }
+
+  .brand {
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .brand-badge {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    height: auto !important;
+    border-radius: 0 !important;
+  }
+
+  .brand-badge img {
+    width: 190px !important;
+    height: auto !important;
+    display: block;
+  }
+
   .hero {
     padding: 76px 0 52px;
+  }
+
+  .hero--premium {
+    padding-top: 26px;
+    padding-bottom: 46px;
   }
 
   h1 {
@@ -1186,4 +1239,23 @@ h1 {
   .pill span small {
     display: none;
   }
+}
+.proof-card footer{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top: 14px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(0, 35, 55, 0.62);
+}
+
+.proof-card footer::before{
+  content:"";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(202, 210, 213, 0.95);
+  border: 1px solid rgba(0, 35, 55, 0.12);
+  display:inline-block;
 }
