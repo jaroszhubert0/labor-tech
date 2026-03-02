@@ -1061,6 +1061,9 @@ h1 {
   .header-cta {
     display: none;
   }
+  .pill {
+    display: none;
+  }
 }
 
 @media (max-width: 640px) {
