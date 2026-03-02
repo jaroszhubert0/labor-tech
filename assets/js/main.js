@@ -10,27 +10,83 @@
   const btn = document.querySelector('[data-menu-btn]');
   const panel = document.querySelector('[data-menu-panel]');
   if (btn && panel) {
+    let closeTimer = null;
+
+    const setState = (nextOpen) => {
+      btn.setAttribute('aria-expanded', String(nextOpen));
+      btn.setAttribute('aria-label', nextOpen ? 'Zamknij menu' : 'Otwórz menu');
+      btn.classList.toggle('is-open', nextOpen);
+    };
+
+    const finishClose = () => {
+      if (btn.getAttribute('aria-expanded') === 'false') panel.hidden = true;
+      panel.removeEventListener('transitionend', finishClose);
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+    };
+
     const open = () => {
+      panel.removeEventListener('transitionend', finishClose);
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+
       panel.hidden = false;
-      btn.setAttribute('aria-expanded', 'true');
+      setState(true);
+
+      if (prefersReduced) {
+        panel.classList.add('is-open');
+        return;
+      }
+
+      window.requestAnimationFrame(() => {
+        panel.classList.add('is-open');
+      });
     };
-    const close = () => {
-      panel.hidden = true;
-      btn.setAttribute('aria-expanded', 'false');
+
+    const close = (immediate = false) => {
+      panel.removeEventListener('transitionend', finishClose);
+      setState(false);
+      panel.classList.remove('is-open');
+
+      if (immediate || prefersReduced) {
+        panel.hidden = true;
+        if (closeTimer) {
+          window.clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+        return;
+      }
+
+      panel.addEventListener('transitionend', finishClose, { once: true });
+      closeTimer = window.setTimeout(finishClose, 320);
     };
-    const toggle = () => (panel.hidden ? open() : close());
+
+    const toggle = () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        close();
+        return;
+      }
+      open();
+    };
 
     btn.addEventListener('click', toggle);
-    panel.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target && target.matches('a')) close();
+    panel.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => close());
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
     });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980) close(true);
+    });
 
     // Start closed
-    close();
+    close(true);
   }
 
   // Scroll reveal
