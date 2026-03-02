@@ -89,7 +89,15 @@
     close(true);
   }
 
-  // Scroll reveal
+    // Header "scrolled" state (glass + shadow)
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  // Scroll reveal (premium)
   const targets = Array.from(document.querySelectorAll('[data-reveal]'));
   if (!targets.length) return;
 
@@ -107,7 +115,7 @@
         }
       }
     },
-    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+    { threshold: 0.12, rootMargin: '0px 0px -10% 0px' }
   );
 
   targets.forEach((el) => io.observe(el));
