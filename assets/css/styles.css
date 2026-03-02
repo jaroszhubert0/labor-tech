@@ -322,12 +322,12 @@ img {
 }
 
 .hero--premium {
-  padding-top: 32px;
+  padding-top: 10px;
   padding-bottom: 56px;
 }
 
 .hero--compact {
-  padding: 56px 0 26px;
+  padding: 32px 0 26px;
 }
 
 .hero-grid {
