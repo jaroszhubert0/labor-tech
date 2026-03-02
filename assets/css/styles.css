@@ -469,7 +469,11 @@ h1 {
   box-shadow: var(--shadow-md);
   background: var(--white);
 }
-
+.hero-photo{
+  border-radius: 18px;   /* dopasuj do reszty kart */
+  overflow: hidden;
+  display: block;
+}
 .hero-strip {
   margin-top: 26px;
   padding: 10px;
