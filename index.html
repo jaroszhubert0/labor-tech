@@ -8,7 +8,7 @@
   <meta name="description" content="Labor-Tech Anna Jarosz – pracownia protetyczna w Lublinie. Korony i mosty, protezy, szyny oraz naprawy. Estetyka, dopasowanie i przewidywalny proces." />
   <link rel="canonical" href="https://labor-tech.pl/" />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <meta name="theme-color" content="#f7fbfc" />
+  <meta name="theme-color" content="#ffffff" />
   <meta name="color-scheme" content="light" />
 
   <meta property="og:title" content="Labor-Tech Anna Jarosz – pracownia protetyczna Lublin" />
@@ -83,7 +83,7 @@
   </script>
 </head>
 
-<body>
+<body class="home">
   <a class="skip-link" href="#main">Przejdź do treści</a>
 
   <header class="site-header">
@@ -126,24 +126,34 @@
   </header>
 
   <main id="main">
-    <section class="hero">
+    <section class="hero hero--premium">
       <div class="container hero-grid">
         <div class="hero-copy" data-reveal>
-          <div class="eyebrow"><span aria-hidden="true" class="dot"></span> Pracownia protetyczna • Lublin</div>
-          <h1>Protetyka, która wygląda naturalnie.</h1>
+          <div class="eyebrow"><span aria-hidden="true" class="dot"></span> Premium Dental Lab • Lublin</div>
+          <h1>Nowoczesna protetyka w estetyce klasy premium.</h1>
           <p class="lead">
-            W Labor-Tech wykonujemy prace protetyczne z naciskiem na dopasowanie, estetykę i przewidywalny efekt.
-            Współpracujemy z gabinetami stomatologicznymi w Lublinie i okolicach.
+            Tworzymy prace protetyczne dla gabinetów, które oczekują przewidywalnego procesu, spójnej komunikacji i
+            efektu o naturalnym, precyzyjnym wykończeniu.
           </p>
+          <ul class="hero-points">
+            <li>Kontrola jakości na każdym etapie realizacji.</li>
+            <li>Perfekcyjna estetyka ceramiki i stabilne dopasowanie.</li>
+            <li>Bezpośrednia współpraca technik - lekarz.</li>
+          </ul>
           <div class="hero-actions">
-            <a class="btn" href="kontakt/">Kontakt</a>
-            <a class="btn btn--ghost" href="dla-gabinetow/">Współpraca B2B</a>
+            <a class="btn" href="kontakt/">Umów rozmowę</a>
+            <a class="btn btn--ghost" href="dla-gabinetow/">Model współpracy B2B</a>
+          </div>
+          <div class="hero-metrics" aria-label="Atuty pracowni">
+            <div class="metric"><strong>3 etapy</strong><span>kontroli jakości</span></div>
+            <div class="metric"><strong>1:1</strong><span>kontakt techniczny</span></div>
+            <div class="metric"><strong>Premium</strong><span>platinum finish</span></div>
           </div>
         </div>
 
-        <div class="hero-media" data-reveal>
-          <img src="assets/img/gallery/3.webp" alt="Model protetyczny w pracowni" loading="eager" decoding="async" />
-        </div>
+        <figure class="hero-media" data-reveal>
+          <img src="assets/img/gallery/6.webp" alt="Precyzyjna ceramiczna praca protetyczna na jasnym tle" loading="eager" decoding="async" />
+        </figure>
       </div>
     </section>
 
@@ -151,30 +161,31 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <div>
-            <h2>Zakres usług</h2>
-            <p>Najczęstsze realizacje: korony i mosty, protezy, szyny relaksacyjne oraz naprawy.</p>
+            <p class="section-kicker">Zakres usług</p>
+            <h2>Kompleksowe prace protetyczne dla nowoczesnych gabinetów.</h2>
+            <p>Minimalistyczny proces, czytelne etapy i jakość, która broni się w codziennej praktyce klinicznej.</p>
           </div>
         </div>
 
-        <div class="grid-4">
-          <a class="card card-link" href="uslugi/korony-mosty/" data-reveal>
+        <div class="grid-4 services-grid">
+          <a class="card card-link service-card" href="uslugi/korony-mosty/" data-reveal>
             <h3>Korony i mosty</h3>
-            <p>Naturalna estetyka, kontrola kontaktów i precyzyjne dopasowanie.</p>
+            <p>Precyzyjne prowadzenie linii estetycznej i kontrola kontaktów okluzyjnych.</p>
             <span class="chev" aria-hidden="true">→</span>
           </a>
-          <a class="card card-link" href="uslugi/protezy/" data-reveal>
+          <a class="card card-link service-card" href="uslugi/protezy/" data-reveal>
             <h3>Protezy</h3>
-            <p>Komfort i stabilność – rozwiązanie dobrane do warunków i oczekiwań.</p>
+            <p>Wysoki komfort użytkowania i indywidualne dopasowanie do warunków pacjenta.</p>
             <span class="chev" aria-hidden="true">→</span>
           </a>
-          <a class="card card-link" href="uslugi/szyny/" data-reveal>
+          <a class="card card-link service-card" href="uslugi/szyny/" data-reveal>
             <h3>Szyny</h3>
-            <p>Relaksacyjne i ochronne – wygodne, powtarzalne w efekcie.</p>
+            <p>Relaksacyjne i ochronne projekty zapewniające stabilność oraz powtarzalność.</p>
             <span class="chev" aria-hidden="true">→</span>
           </a>
-          <a class="card card-link" href="uslugi/naprawy/" data-reveal>
+          <a class="card card-link service-card" href="uslugi/naprawy/" data-reveal>
             <h3>Naprawy</h3>
-            <p>Szybka ocena i jasna informacja o możliwości oraz terminie.</p>
+            <p>Szybka diagnostyka, jasna decyzja i termin dostosowany do potrzeb gabinetu.</p>
             <span class="chev" aria-hidden="true">→</span>
           </a>
         </div>
@@ -183,27 +194,31 @@
 
     <section class="section">
       <div class="container">
-        <div class="split">
-          <div class="card" data-reveal>
-            <h2>Współpraca z gabinetami</h2>
+        <div class="split split--asym">
+          <article class="card" data-reveal>
+            <p class="section-kicker">Standard pracy</p>
+            <h2>Sterylnie, nowocześnie i z pełną kontrolą procesu.</h2>
             <p>
-              Pracujemy w prostym modelu: czytelne ustalenia, kontrola jakości na etapach i szybka informacja zwrotna.
-              Dzięki temu gabinet ma spokój, a pacjent dostaje przewidywalny efekt.
+              Labor-Tech łączy dokładność techniczną z premium doświadczeniem współpracy: od pierwszego ustalenia po
+              finalne przekazanie pracy.
             </p>
-            <div class="hero-actions">
-              <a class="btn" href="dla-gabinetow/">Jak wygląda współpraca</a>
-              <a class="btn btn--ghost" href="tel:+48608373443">Zadzwoń</a>
-            </div>
-          </div>
-
-          <div class="card" data-reveal>
-            <h2>Proces w 3 krokach</h2>
-            <ul class="timeline">
-              <li class="step"><div class="num" aria-hidden="true">1</div><div><b>Ustalenie</b><span>Zakres, estetyka, termin i sposób przekazania.</span></div></li>
-              <li class="step"><div class="num" aria-hidden="true">2</div><div><b>Realizacja</b><span>Wykonanie etapami z kontrolą dopasowania.</span></div></li>
-              <li class="step"><div class="num" aria-hidden="true">3</div><div><b>Odbiór</b><span>Przekazanie pracy i informacja o ewentualnych korektach.</span></div></li>
+            <ul class="feature-list">
+              <li>Jedna osoba prowadząca zlecenie od startu do odbioru.</li>
+              <li>Transparentny status realizacji i szybki feedback techniczny.</li>
+              <li>Minimalistyczny workflow bez zbędnych opóźnień i domysłów.</li>
             </ul>
-          </div>
+            <div class="hero-actions">
+              <a class="btn btn--ghost" href="o-pracowni/">Poznaj pracownię</a>
+            </div>
+          </article>
+
+          <article class="card card--media" data-reveal>
+            <img src="assets/img/gallery/3.webp" alt="Precyzyjna praca technika dentystycznego w laboratorium" loading="lazy" decoding="async" />
+            <div class="card-media-copy">
+              <h3>High-End Dental Prosthetics Lab</h3>
+              <p>Wysoka estetyka, subtelny platinum finish i zaufanie budowane na powtarzalnej jakości.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -212,42 +227,48 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <div>
-            <h2>Pracownia</h2>
-            <p>Kilka ujęć z codziennej pracy – czysto, technicznie i bez zbędnych efektów.</p>
+            <p class="section-kicker">Proces</p>
+            <h2>3 kroki do przewidywalnego efektu protetycznego.</h2>
           </div>
         </div>
-        <div class="gallery" data-reveal>
-          <img src="assets/img/gallery/1.webp" alt="Praca w pracowni protetycznej" loading="lazy" decoding="async" />
-          <img src="assets/img/gallery/2.webp" alt="Model protetyczny" loading="lazy" decoding="async" />
-          <img src="assets/img/gallery/4.webp" alt="Pracownia protetyczna" loading="lazy" decoding="async" />
-          <img src="assets/img/gallery/5.webp" alt="Detal pracy protetycznej" loading="lazy" decoding="async" />
-          <img src="assets/img/gallery/6.webp" alt="Dopasowanie pracy" loading="lazy" decoding="async" />
-          <img src="assets/img/gallery/3.webp" alt="Model protetyczny w pracowni" loading="lazy" decoding="async" />
-        </div>
+
+        <ol class="process-grid">
+          <li class="process-step" data-reveal>
+            <span class="process-tag">01</span>
+            <h3>Brief kliniczny</h3>
+            <p>Wspólnie ustalamy zakres pracy, estetykę i termin przekazania.</p>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-tag">02</span>
+            <h3>Precyzyjna realizacja</h3>
+            <p>Wykonanie z etapową kontrolą dopasowania i jakości wykończenia.</p>
+          </li>
+          <li class="process-step" data-reveal>
+            <span class="process-tag">03</span>
+            <h3>Finalizacja</h3>
+            <p>Odbiór pracy z czytelną informacją techniczną i rekomendacją korekt.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
     <section class="section" aria-label="Kontakt">
       <div class="container">
-        <div class="split">
-          <div class="card" data-reveal>
-            <h2>Kontakt</h2>
+        <div class="cta-shell" data-reveal>
+          <div>
+            <p class="section-kicker">Kontakt</p>
+            <h2>Porozmawiajmy o Twoim kolejnym przypadku.</h2>
             <p>
-              Najszybciej ustalimy temat telefonicznie. Jeśli piszesz e-mail: podaj zakres pracy, termin i preferowany sposób przekazania.
+              Najszybsza ścieżka: telefon. W e-mailu warto dodać zakres pracy, oczekiwany termin i sposób przekazania.
             </p>
-            <div class="hero-actions">
-              <a class="btn" href="tel:+48608373443">+48 608 373 443</a>
-              <a class="btn btn--ghost" href="mailto:labortechlublin@gmail.com">Napisz e-mail</a>
+            <div class="cta-meta">
+              <strong>ul. Sielankowa 9/1a, 20-802 Lublin</strong>
             </div>
           </div>
-
-          <div class="card" data-reveal>
-            <h2>Adres</h2>
-            <p><strong>ul. Sielankowa 9/1a</strong><br />20-802 Lublin</p>
-            <div class="hero-actions">
-              <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps?q=Sielankowa+9%2F1a%2C+20-802+Lublin">Otwórz mapę</a>
-              <a class="btn btn--ghost" href="kontakt/">Więcej danych</a>
-            </div>
+          <div class="cta-actions">
+            <a class="btn" href="tel:+48608373443">+48 608 373 443</a>
+            <a class="btn btn--ghost" href="mailto:labortechlublin@gmail.com">labortechlublin@gmail.com</a>
+            <a class="btn btn--ghost" target="_blank" rel="noopener" href="https://www.google.com/maps?q=Sielankowa+9%2F1a%2C+20-802+Lublin">Otwórz mapę</a>
           </div>
         </div>
       </div>
