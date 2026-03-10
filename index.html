@@ -162,7 +162,7 @@
 <img class="hero-photo" data-reveal="3"
      alt="Anna Jarosz, właścicielka pracowni protetycznej Labor-Tech w Lublinie"
      decoding="async" loading="eager"
-     src="assets/img/gallery/anna.webp"/>
+     src="assets/img/gallery/AnnaJarosz.webp"/>
 </div>
 </aside>
 </div>
@@ -292,14 +292,19 @@
         </p>
 <!-- ukryty iframe dla wysyłki (bez CORS) -->
 <iframe id="hidden_iframe_b2b" name="hidden_iframe_b2b" style="display:none"></iframe>
-<form action="https://script.google.com/macros/s/AKfycbyZfRndmkYVNsh6uknnQq7QC5U_40bEFizBGrAMLJRQiq7hqB0FnRTZ277tDR-PLXba/exec" class="contact-form" id="b2bForm" method="post" target="hidden_iframe_b2b">
+<form action="https://script.google.com/macros/s/AKfycbyZfRndmkYVNsh6uknnQq7QC5U_40bEFizBGrAMLJRQiq7hqB0FnRTZ277tDR-PLXba/exec" class="contact-form" data-form-id="b2b" id="b2bForm" method="post" target="hidden_iframe_b2b">
 <input name="form_type" type="hidden" value="cooperation"/>
+<input name="form_id" type="hidden" value="b2b"/>
+<input name="form_start" type="hidden" value=""/>
+<input name="form_sent" type="hidden" value=""/>
+<input name="form_time_ms" type="hidden" value=""/>
+<input name="js_enabled" type="hidden" value="0"/>
 <!-- honeypot antyspam -->
 <input aria-hidden="true" autocomplete="off" name="website" style="position:absolute; left:-9999px; top:-9999px;" tabindex="-1" type="text"/>
 <div class="field-row">
 <div class="form-field">
-<label for="doctor-name">Imię i nazwisko*</label>
-<input id="doctor-name" name="doctor_name" required="" type="text"/>
+<label for="contact-name">Imię i nazwisko*</label>
+<input id="contact-name" name="contact_name" required="" type="text"/>
 </div>
 <div class="form-field">
 <label for="clinic-name">Nazwa gabinetu*</label>
@@ -309,11 +314,11 @@
 <div class="field-row">
 <div class="form-field">
 <label for="doctor-email">E-mail służbowy*</label>
-<input id="doctor-email" name="doctor_email" required="" type="email"/>
+<input id="doctor-email" name="email" required="" type="email"/>
 </div>
 <div class="form-field">
 <label for="doctor-phone">Telefon (opcjonalnie)</label>
-<input id="doctor-phone" name="doctor_phone" type="tel"/>
+<input id="doctor-phone" name="phone" type="tel"/>
 </div>
 </div>
 <div class="field-row">
@@ -340,6 +345,9 @@
 <textarea id="message" name="message" placeholder="Napisz 2–3 zdania: czego dotyczy współpraca, orientacyjna liczba prac miesięcznie i priorytet (estetyka / funkcja / terminy)." rows="5"></textarea>
 <small class="form-help">Na tym etapie nie potrzebujemy załączników ani danych pacjentów.</small>
 </div>
+<div class="form-field">
+<div class="g-recaptcha" data-sitekey="6LcSuIUsAAAAALR1wPmoVCVRkKDuiDj4ksV8VsB-"></div>
+</div>
 <div class="form-actions">
 <button class="btn" type="submit">Wyślij zapytanie</button>
 <small class="form-help">lub napisz: <a href="mailto:labortechlublin@gmail.com">labortechlublin@gmail.com</a></small>
@@ -355,13 +363,21 @@
           Wyślemy dokument z zakresem prac, orientacyjnymi widełkami cen i krótką checklistą przekazywania zleceń.
         </p>
 <iframe id="hidden_iframe_pricing" name="hidden_iframe_pricing" style="display:none"></iframe>
-<form action="https://script.google.com/macros/s/AKfycbyZfRndmkYVNsh6uknnQq7QC5U_40bEFizBGrAMLJRQiq7hqB0FnRTZ277tDR-PLXba/exec" class="lead-form" id="pricingForm" method="post" target="hidden_iframe_pricing">
+<form action="https://script.google.com/macros/s/AKfycbyZfRndmkYVNsh6uknnQq7QC5U_40bEFizBGrAMLJRQiq7hqB0FnRTZ277tDR-PLXba/exec" class="lead-form" data-form-id="pricing" id="pricingForm" method="post" target="hidden_iframe_pricing">
 <input name="form_type" type="hidden" value="pricing"/>
+<input name="form_id" type="hidden" value="pricing"/>
+<input name="form_start" type="hidden" value=""/>
+<input name="form_sent" type="hidden" value=""/>
+<input name="form_time_ms" type="hidden" value=""/>
+<input name="js_enabled" type="hidden" value="0"/>
 <!-- honeypot antyspam -->
 <input aria-hidden="true" autocomplete="off" name="website" style="position:absolute; left:-9999px; top:-9999px;" tabindex="-1" type="text"/>
 <div class="form-field">
 <label for="lead-email">E-mail służbowy*</label>
-<input id="lead-email" name="lead_email" required="" type="email"/>
+<input id="lead-email" name="email" required="" type="email"/>
+</div>
+<div class="form-field">
+<div class="g-recaptcha" data-sitekey="6LcSuIUsAAAAALR1wPmoVCVRkKDuiDj4ksV8VsB-"></div>
 </div>
 <div class="form-actions">
 <button class="btn" type="submit">Wyślij cennik na e-mail</button>
@@ -412,42 +428,126 @@
     </div>
   </div>
 </section>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
-  function bindIFrameForm(formId, iframeId, statusId, okText) {
+  const MIN_FILL_MS = 4000;
+  const FALLBACK_OK_DELAY_MS = 1200;
+
+  function setStatus(statusEl, text, isError) {
+    statusEl.textContent = text;
+    statusEl.dataset.state = isError ? "error" : "ok";
+  }
+
+  function getRecaptchaValue(form) {
+    const el = form.querySelector('textarea[name="g-recaptcha-response"]');
+    return el ? el.value.trim() : "";
+  }
+
+  function resetRecaptcha() {
+    if (window.grecaptcha && typeof window.grecaptcha.reset === "function") {
+      window.grecaptcha.reset();
+    }
+  }
+
+  function bindIFrameForm(opts) {
+    const { formId, iframeId, statusId, okText, formKey } = opts;
     const form = document.getElementById(formId);
     const iframe = document.getElementById(iframeId);
     const status = document.getElementById(statusId);
 
     if (!form || !iframe || !status) return;
 
-    let submitted = false;
+    const startInput = form.querySelector('input[name="form_start"]');
+    const sentInput = form.querySelector('input[name="form_sent"]');
+    const timeInput = form.querySelector('input[name="form_time_ms"]');
+    const jsInput = form.querySelector('input[name="js_enabled"]');
 
-    form.addEventListener("submit", () => {
+    if (startInput) startInput.value = String(Date.now());
+    if (jsInput) jsInput.value = "1";
+
+    let submitted = false;
+    let awaitingMessage = false;
+
+    form.addEventListener("submit", (event) => {
+      if (typeof form.reportValidity === "function" && !form.reportValidity()) {
+        event.preventDefault();
+        return;
+      }
+
+      const now = Date.now();
+      const startTs = startInput ? Number(startInput.value || 0) : 0;
+      const elapsed = startTs ? now - startTs : 0;
+
+      if (sentInput) sentInput.value = String(now);
+      if (timeInput) timeInput.value = String(elapsed);
+
+      if (elapsed > 0 && elapsed < MIN_FILL_MS) {
+        event.preventDefault();
+        setStatus(status, "Wyślij po minimum 4 sekundach.", true);
+        return;
+      }
+
+      if (!getRecaptchaValue(form)) {
+        event.preventDefault();
+        setStatus(status, "Potwierdź, że nie jesteś botem (reCAPTCHA).", true);
+        return;
+      }
+
       submitted = true;
-      status.textContent = "Wysyłanie…";
+      awaitingMessage = true;
+      setStatus(status, "Wysyłanie…", false);
     });
 
     iframe.addEventListener("load", () => {
-      if (!submitted) return; // żeby nie odpaliło przy starcie
+      if (!submitted) return;
       submitted = false;
-      status.textContent = okText;
-      form.reset();
+
+      if (awaitingMessage) {
+        setTimeout(() => {
+          if (!awaitingMessage) return;
+          awaitingMessage = false;
+          setStatus(status, okText, false);
+          form.reset();
+          resetRecaptcha();
+          if (startInput) startInput.value = String(Date.now());
+        }, FALLBACK_OK_DELAY_MS);
+      }
+    });
+
+    window.addEventListener("message", (event) => {
+      const data = event && event.data ? event.data : null;
+      if (!data || data.type !== "LT_FORM_STATUS") return;
+      if (data.formId && data.formId !== formKey) return;
+
+      awaitingMessage = false;
+
+      if (data.status === "ok") {
+        setStatus(status, data.message || okText, false);
+        form.reset();
+        resetRecaptcha();
+        if (startInput) startInput.value = String(Date.now());
+        return;
+      }
+
+      setStatus(status, data.message || "Wystąpił błąd. Spróbuj ponownie.", true);
     });
   }
 
-  bindIFrameForm(
-    "b2bForm",
-    "hidden_iframe_b2b",
-    "b2bStatus",
-    "Dziękujemy. Odezwiemy się najszybciej jak to możliwe."
-  );
+  bindIFrameForm({
+    formId: "b2bForm",
+    iframeId: "hidden_iframe_b2b",
+    statusId: "b2bStatus",
+    okText: "Dziękujemy. Odezwiemy się najszybciej jak to możliwe.",
+    formKey: "b2b"
+  });
 
-  bindIFrameForm(
-    "pricingForm",
-    "hidden_iframe_pricing",
-    "pricingStatus",
-    "Gotowe!"
-  );
+  bindIFrameForm({
+    formId: "pricingForm",
+    iframeId: "hidden_iframe_pricing",
+    statusId: "pricingStatus",
+    okText: "Gotowe!",
+    formKey: "pricing"
+  });
 </script>
 </main>
 <footer class="site-footer">
