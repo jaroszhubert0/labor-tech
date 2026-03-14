@@ -24,6 +24,7 @@
 <meta content="pl_PL" property="og:locale"/>
 <meta content="https://labor-tech.pl/" property="og:url"/>
 <meta content="summary_large_image" name="twitter:card"/>
+<link as="font" crossorigin="" href="assets/fonts/montserrat-latin-ext-wght-400-800.woff2" rel="preload" type="font/woff2"/>
 <link href="assets/css/styles.css" rel="stylesheet"/>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -136,7 +137,7 @@
 </div>
 </div>
 <figure class="hero-media" data-reveal="">
-<img alt="Precyzyjna ceramiczna praca protetyczna na jasnym tle" data-reveal="3" decoding="async" loading="eager" src="assets/img/gallery/5.webp"/>
+<img alt="Precyzyjna ceramiczna praca protetyczna na jasnym tle" data-reveal="3" decoding="async" fetchpriority="high" height="2048" loading="eager" sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1120px) calc(100vw - 48px), 43vw" src="assets/img/gallery/5-sm.webp" srcset="assets/img/gallery/5-sm.webp 900w, assets/img/gallery/5.webp 1365w" width="1365"/>
 </figure>
 </div>
 </section>
@@ -161,10 +162,36 @@
 </article>
 <img class="hero-photo" data-reveal="3"
      alt="Anna Jarosz, właścicielka pracowni protetycznej Labor-Tech w Lublinie"
-     decoding="async" loading="eager"
+     decoding="async" height="1600" loading="lazy" sizes="(max-width: 1120px) calc(100vw - 48px), 32vw" width="1199"
      src="assets/img/gallery/AnnaJarosz.webp"/>
 </div>
-</aside>
+</div>
+</section>
+<section class="section certificates-teaser-section">
+<div class="container">
+<div class="trust-teaser">
+<div class="card trust-teaser__copy" data-reveal="">
+<p class="section-kicker" data-reveal="2">Szkolenia i certyfikaty</p>
+<h2 data-reveal="1">Rozwój warsztatu potwierdzony szkoleniami branżowymi.</h2>
+<p data-reveal="2">Regularnie rozwijamy kompetencje w obszarze ceramiki dentystycznej, technik cyfrowych i nowoczesnych rozwiązań protetycznych. Pełny przegląd certyfikatów znajdziesz na stronie o pracowni.</p>
+<div class="hero-actions">
+<a class="btn" href="/o-pracowni/#certyfikaty">Zobacz certyfikaty</a>
+</div>
+</div>
+<div class="trust-teaser__grid">
+<article class="card trust-card" data-reveal="">
+<h3>Ivoclar</h3>
+<p>Szkolenia z ceramiki dentystycznej, licowania i estetyki prac protetycznych.</p>
+</article>
+<article class="card trust-card" data-reveal="">
+<h3>BEGO</h3>
+<p>Doświadczenie potwierdzone kursami technik frezowania i pracy w systemach laboratoryjnych.</p>
+</article>
+<article class="card trust-card" data-reveal="">
+<h3>Clear Aligner</h3>
+<p>Szkolenia online z zakresu technik alignerowych i planowania nowoczesnych workflow.</p>
+</article>
+</div>
 </div>
 </div>
 </section>
@@ -428,127 +455,6 @@
     </div>
   </div>
 </section>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script>
-  const MIN_FILL_MS = 4000;
-  const FALLBACK_OK_DELAY_MS = 1200;
-
-  function setStatus(statusEl, text, isError) {
-    statusEl.textContent = text;
-    statusEl.dataset.state = isError ? "error" : "ok";
-  }
-
-  function getRecaptchaValue(form) {
-    const el = form.querySelector('textarea[name="g-recaptcha-response"]');
-    return el ? el.value.trim() : "";
-  }
-
-  function resetRecaptcha() {
-    if (window.grecaptcha && typeof window.grecaptcha.reset === "function") {
-      window.grecaptcha.reset();
-    }
-  }
-
-  function bindIFrameForm(opts) {
-    const { formId, iframeId, statusId, okText, formKey } = opts;
-    const form = document.getElementById(formId);
-    const iframe = document.getElementById(iframeId);
-    const status = document.getElementById(statusId);
-
-    if (!form || !iframe || !status) return;
-
-    const startInput = form.querySelector('input[name="form_start"]');
-    const sentInput = form.querySelector('input[name="form_sent"]');
-    const timeInput = form.querySelector('input[name="form_time_ms"]');
-    const jsInput = form.querySelector('input[name="js_enabled"]');
-
-    if (startInput) startInput.value = String(Date.now());
-    if (jsInput) jsInput.value = "1";
-
-    let submitted = false;
-    let awaitingMessage = false;
-
-    form.addEventListener("submit", (event) => {
-      if (typeof form.reportValidity === "function" && !form.reportValidity()) {
-        event.preventDefault();
-        return;
-      }
-
-      const now = Date.now();
-      const startTs = startInput ? Number(startInput.value || 0) : 0;
-      const elapsed = startTs ? now - startTs : 0;
-
-      if (sentInput) sentInput.value = String(now);
-      if (timeInput) timeInput.value = String(elapsed);
-
-      if (elapsed > 0 && elapsed < MIN_FILL_MS) {
-        event.preventDefault();
-        setStatus(status, "Wyślij po minimum 4 sekundach.", true);
-        return;
-      }
-
-      if (!getRecaptchaValue(form)) {
-        event.preventDefault();
-        setStatus(status, "Potwierdź, że nie jesteś botem (reCAPTCHA).", true);
-        return;
-      }
-
-      submitted = true;
-      awaitingMessage = true;
-      setStatus(status, "Wysyłanie…", false);
-    });
-
-    iframe.addEventListener("load", () => {
-      if (!submitted) return;
-      submitted = false;
-
-      if (awaitingMessage) {
-        setTimeout(() => {
-          if (!awaitingMessage) return;
-          awaitingMessage = false;
-          setStatus(status, okText, false);
-          form.reset();
-          resetRecaptcha();
-          if (startInput) startInput.value = String(Date.now());
-        }, FALLBACK_OK_DELAY_MS);
-      }
-    });
-
-    window.addEventListener("message", (event) => {
-      const data = event && event.data ? event.data : null;
-      if (!data || data.type !== "LT_FORM_STATUS") return;
-      if (data.formId && data.formId !== formKey) return;
-
-      awaitingMessage = false;
-
-      if (data.status === "ok") {
-        setStatus(status, data.message || okText, false);
-        form.reset();
-        resetRecaptcha();
-        if (startInput) startInput.value = String(Date.now());
-        return;
-      }
-
-      setStatus(status, data.message || "Wystąpił błąd. Spróbuj ponownie.", true);
-    });
-  }
-
-  bindIFrameForm({
-    formId: "b2bForm",
-    iframeId: "hidden_iframe_b2b",
-    statusId: "b2bStatus",
-    okText: "Dziękujemy. Odezwiemy się najszybciej jak to możliwe.",
-    formKey: "b2b"
-  });
-
-  bindIFrameForm({
-    formId: "pricingForm",
-    iframeId: "hidden_iframe_pricing",
-    statusId: "pricingStatus",
-    okText: "Gotowe!",
-    formKey: "pricing"
-  });
-</script>
 </main>
 <footer class="site-footer">
 <div class="container foot" data-reveal="">
@@ -560,5 +466,6 @@
 </div>
 </footer>
 <script defer="" src="assets/js/main.js"></script>
+<script defer="" src="assets/js/forms.js"></script>
 </body>
 </html>
