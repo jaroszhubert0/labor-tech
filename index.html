@@ -2,13 +2,55 @@
 
 <html lang="pl">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E1BE7FMJBR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-E1BE7FMJBR');
+  (function () {
+    const analyticsId = 'G-E1BE7FMJBR';
+    const listenerOptions = { once: true, passive: true };
+    let analyticsLoaded = false;
+
+    const loadAnalytics = () => {
+      if (analyticsLoaded) return;
+      analyticsLoaded = true;
+      detachListeners();
+
+      gtag('js', new Date());
+      gtag('config', analyticsId);
+
+      const script = document.createElement('script');
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+      script.async = true;
+      document.head.appendChild(script);
+    };
+
+    const scheduleAnalytics = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(loadAnalytics, { timeout: 4000 });
+        return;
+      }
+
+      window.setTimeout(loadAnalytics, 1800);
+    };
+
+    const detachListeners = () => {
+      ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach((eventName) => {
+        window.removeEventListener(eventName, loadAnalytics, listenerOptions);
+      });
+    };
+
+    ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach((eventName) => {
+      window.addEventListener(eventName, loadAnalytics, listenerOptions);
+    });
+
+    if (document.readyState === 'complete') {
+      scheduleAnalytics();
+      return;
+    }
+
+    window.addEventListener('load', scheduleAnalytics, { once: true });
+  })();
 </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -24,8 +66,10 @@
 <meta content="pl_PL" property="og:locale"/>
 <meta content="https://labor-tech.pl/" property="og:url"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<link as="font" crossorigin="" href="assets/fonts/montserrat-latin-ext-wght-400-800.woff2" rel="preload" type="font/woff2"/>
-<link href="assets/css/styles.css" rel="stylesheet"/>
+<link as="font" crossorigin="" href="assets/fonts/montserrat-latin-ext-wght-400-800.woff2?v=20260315" rel="preload" type="font/woff2"/>
+<link as="image" href="assets/img/logo-sm.webp?v=20260315" imagesizes="(max-width: 640px) 142px, 160px" imagesrcset="assets/img/logo-sm.webp?v=20260315 320w, assets/img/logo.webp?v=20260315 760w" rel="preload"/>
+<link as="image" href="assets/img/gallery/5-sm.webp?v=20260315" imagesizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1120px) calc(100vw - 48px), 43vw" imagesrcset="assets/img/gallery/5-sm.webp?v=20260315 900w, assets/img/gallery/5.webp?v=20260315 1365w" rel="preload"/>
+<link href="assets/css/styles.css?v=20260315" rel="stylesheet"/>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -77,7 +121,7 @@
 <div class="container header-inner">
 <a aria-label="Labor-Tech Anna Jarosz – strona główna" class="brand" href="./">
 <span class="brand-badge">
-<img alt="Labor-Tech Anna Jarosz" decoding="async" height="243" loading="eager" src="assets/img/logo.webp" width="760"/>
+<img alt="Labor-Tech Anna Jarosz" decoding="async" fetchpriority="high" height="103" loading="eager" sizes="(max-width: 640px) 142px, 160px" src="assets/img/logo-sm.webp?v=20260315" srcset="assets/img/logo-sm.webp?v=20260315 320w, assets/img/logo.webp?v=20260315 760w" width="320"/>
 </span>
 <span class="sr-only">Labor-Tech Anna Jarosz</span>
 </a>
@@ -137,7 +181,7 @@
 </div>
 </div>
 <figure class="hero-media" data-reveal="">
-<img alt="Precyzyjna ceramiczna praca protetyczna na jasnym tle" data-reveal="3" decoding="async" fetchpriority="high" height="2048" loading="eager" sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1120px) calc(100vw - 48px), 43vw" src="assets/img/gallery/5-sm.webp" srcset="assets/img/gallery/5-sm.webp 900w, assets/img/gallery/5.webp 1365w" width="1365"/>
+<img alt="Precyzyjna ceramiczna praca protetyczna na jasnym tle" data-reveal="3" decoding="async" fetchpriority="high" height="2048" loading="eager" sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1120px) calc(100vw - 48px), 43vw" src="assets/img/gallery/5-sm.webp?v=20260315" srcset="assets/img/gallery/5-sm.webp?v=20260315 900w, assets/img/gallery/5.webp?v=20260315 1365w" width="1365"/>
 </figure>
 </div>
 </section>
@@ -466,7 +510,7 @@
 <small>© 2026 Labor-Tech Anna Jarosz. <a href="/pracownia-protetyczna-lublin/">Pracownia protetyczna Lublin</a> • <a href="/polityka-prywatnosci/">Polityka prywatności</a></small>
 </div>
 </footer>
-<script defer="" src="assets/js/main.js"></script>
-<script defer="" src="assets/js/forms.js"></script>
+<script defer="" src="assets/js/main.js?v=20260315"></script>
+<script defer="" src="assets/js/forms.js?v=20260315"></script>
 </body>
 </html>
