@@ -11,11 +11,24 @@
   const panel = document.querySelector('[data-menu-panel]');
   if (btn && panel) {
     let closeTimer = null;
+    let lastFocused = null;
+
+    const getFocusable = () =>
+      Array.from(
+        panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      ).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+
+    const setInert = (nextInert) => {
+      if ('inert' in panel) panel.inert = nextInert;
+      panel.setAttribute('aria-hidden', String(nextInert));
+    };
 
     const setState = (nextOpen) => {
       btn.setAttribute('aria-expanded', String(nextOpen));
       btn.setAttribute('aria-label', nextOpen ? 'Zamknij menu' : 'Otwórz menu');
       btn.classList.toggle('is-open', nextOpen);
+      document.body.classList.toggle('menu-open', nextOpen);
+      setInert(!nextOpen);
     };
 
     const finishClose = () => {
@@ -28,6 +41,7 @@
     };
 
     const open = () => {
+      lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       panel.removeEventListener('transitionend', finishClose);
       if (closeTimer) {
         window.clearTimeout(closeTimer);
@@ -39,15 +53,22 @@
 
       if (prefersReduced) {
         panel.classList.add('is-open');
+        const [firstLink] = getFocusable();
+        if (firstLink) firstLink.focus({ preventScroll: true });
         return;
       }
 
       window.requestAnimationFrame(() => {
         panel.classList.add('is-open');
       });
+
+      window.setTimeout(() => {
+        const [firstLink] = getFocusable();
+        if (firstLink) firstLink.focus({ preventScroll: true });
+      }, 40);
     };
 
-    const close = (immediate = false) => {
+    const close = (immediate = false, returnFocus = false) => {
       panel.removeEventListener('transitionend', finishClose);
       setState(false);
       panel.classList.remove('is-open');
@@ -58,41 +79,79 @@
           window.clearTimeout(closeTimer);
           closeTimer = null;
         }
+        if (returnFocus && lastFocused instanceof HTMLElement) {
+          lastFocused.focus({ preventScroll: true });
+        }
         return;
       }
 
       panel.addEventListener('transitionend', finishClose, { once: true });
       closeTimer = window.setTimeout(finishClose, 320);
+      if (returnFocus && lastFocused instanceof HTMLElement) {
+        window.setTimeout(() => lastFocused && lastFocused.focus({ preventScroll: true }), 20);
+      }
     };
 
     const toggle = () => {
       const isOpen = btn.getAttribute('aria-expanded') === 'true';
       if (isOpen) {
-        close();
+        close(false, true);
         return;
       }
       open();
     };
 
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Menu mobilne');
+
     btn.addEventListener('click', toggle);
     panel.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', () => close());
+      a.addEventListener('click', () => close(true));
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        close(false, true);
+        return;
+      }
+
+      if (e.key !== 'Tab' || !isOpen) return;
+
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      if (!isOpen) return;
+      if (!(e.target instanceof Node)) return;
+      if (panel.contains(e.target) || btn.contains(e.target)) return;
+      close();
     });
     window.addEventListener('resize', () => {
       if (window.innerWidth > 980) close(true);
     });
 
     // Start closed
+    setInert(true);
     close(true);
   }
 
-    // Header "scrolled" state (glass + shadow)
+  // Header "scrolled" state (glass + shadow)
   const header = document.querySelector('.site-header');
   if (header) {
-    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 10);
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 18);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
