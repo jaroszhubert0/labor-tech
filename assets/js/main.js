@@ -40,7 +40,12 @@
       }
     };
 
-    const open = () => {
+    const focusFirstLink = () => {
+      const [firstLink] = getFocusable();
+      if (firstLink) firstLink.focus({ preventScroll: true });
+    };
+
+    const open = ({ moveFocus = false } = {}) => {
       lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       panel.removeEventListener('transitionend', finishClose);
       if (closeTimer) {
@@ -53,8 +58,7 @@
 
       if (prefersReduced) {
         panel.classList.add('is-open');
-        const [firstLink] = getFocusable();
-        if (firstLink) firstLink.focus({ preventScroll: true });
+        if (moveFocus) focusFirstLink();
         return;
       }
 
@@ -62,10 +66,11 @@
         panel.classList.add('is-open');
       });
 
-      window.setTimeout(() => {
-        const [firstLink] = getFocusable();
-        if (firstLink) firstLink.focus({ preventScroll: true });
-      }, 40);
+      if (moveFocus) {
+        window.setTimeout(() => {
+          focusFirstLink();
+        }, 40);
+      }
     };
 
     const close = (immediate = false, returnFocus = false) => {
@@ -92,19 +97,21 @@
       }
     };
 
-    const toggle = () => {
+    const toggle = ({ moveFocus = false } = {}) => {
       const isOpen = btn.getAttribute('aria-expanded') === 'true';
       if (isOpen) {
         close(false, true);
         return;
       }
-      open();
+      open({ moveFocus });
     };
 
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-label', 'Menu mobilne');
 
-    btn.addEventListener('click', toggle);
+    btn.addEventListener('click', () => {
+      toggle({ moveFocus: btn.matches(':focus-visible') });
+    });
     panel.querySelectorAll('a').forEach((a) => {
       a.addEventListener('click', () => close(true));
     });
