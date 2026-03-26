@@ -14,9 +14,10 @@
   }
 
   const titleEl = dialog.querySelector('[data-certificate-title-display]');
-  const metaEl = dialog.querySelector('[data-certificate-meta-display]');
   const imageEl = dialog.querySelector('[data-certificate-image]');
   const closeButton = dialog.querySelector('[data-certificates-close]');
+
+  if (!titleEl || !imageEl || !closeButton) return;
 
   let lastTrigger = null;
   let lastSize = { width: 1200, height: 1700 };
@@ -37,7 +38,6 @@
     lastTrigger = trigger;
 
     titleEl.textContent = trigger.dataset.certificateTitle || 'Certyfikat';
-    metaEl.textContent = trigger.dataset.certificateMeta || '';
     imageEl.alt = trigger.querySelector('img') ? trigger.querySelector('img').alt : '';
     imageEl.width = Number(trigger.dataset.certificateFullWidth || 1200);
     imageEl.height = Number(trigger.dataset.certificateFullHeight || 1700);
